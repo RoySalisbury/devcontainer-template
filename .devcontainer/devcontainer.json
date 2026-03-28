@@ -1,0 +1,100 @@
+// RoySalisbury standard devcontainer — works in both Codespaces and local.
+// Copy this folder into a new repo and adjust the [CUSTOMIZE] sections.
+{
+	"name": "Dev Container",  // [CUSTOMIZE] repo name
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"hostRequirements": {
+		"cpus": 2,
+		"memory": "4gb",
+		"storage": "32gb"
+	},
+
+	// ─── Core Features ───────────────────────────────────────────
+	"features": {
+		"ghcr.io/devcontainers/features/dotnet:2": {
+			"version": "10.0"
+			// Multi-targeting: "additionalVersions": "9.0,8.0"
+		},
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
+		"ghcr.io/devcontainers/features/github-cli:1": {},
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"installZsh": true,
+			"installOhMyZsh": true,
+			"configureZshAsDefaultShell": true,
+			"username": "vscode",
+			"upgradePackages": false
+		}
+		// ─── Optional features (uncomment as needed) ──────────
+		// "ghcr.io/devcontainers/features/node:1": { "version": "22" },
+		// "ghcr.io/devcontainers/features/azure-cli:1": {},
+		// "ghcr.io/tailscale/codespace/tailscale:1": {}
+	},
+
+	// ─── VS Code ─────────────────────────────────────────────────
+	"customizations": {
+		"codespaces": {
+			"permissions": {
+				"packages": "write",
+				"actions": "write"
+			}
+		},
+		"vscode": {
+			"extensions": [
+				"ms-dotnettools.csdevkit",
+				"ms-dotnettools.csharp",
+				"ms-dotnettools.vscode-dotnet-runtime",
+				"ms-azuretools.vscode-docker",
+				"GitHub.copilot",
+				"GitHub.copilot-chat",
+				"github.vscode-github-actions"
+			],
+			"settings": {
+				// [CUSTOMIZE] point at your solution file
+				// "dotnet.defaultSolution": "MyProject.sln",
+				"dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true,
+				"csharp.semanticHighlighting.enabled": true,
+				"editor.formatOnSave": true,
+				"editor.formatOnType": true,
+				"editor.codeActionsOnSave": {
+					"source.fixAll": "explicit",
+					"source.organizeImports": "explicit"
+				},
+				"terminal.integrated.defaultProfile.linux": "zsh",
+				"terminal.integrated.profiles.linux": {
+					"zsh": { "path": "/bin/zsh" },
+					"bash": { "path": "/bin/bash" }
+				}
+			}
+		}
+	},
+
+	// ─── Environment ─────────────────────────────────────────────
+	"containerEnv": {
+		"ASPNETCORE_ENVIRONMENT": "Development",
+		"DOTNET_ENVIRONMENT": "Development"
+	},
+
+	// [CUSTOMIZE] repo-specific secrets — set as Codespace secrets
+	// or in .env (auto-fetched from gist by post-create.sh)
+	// "remoteEnv": {
+	//     "MY_SECRET": "${localEnv:MY_SECRET}"
+	// },
+
+	// [CUSTOMIZE] forwarded ports
+	// "forwardPorts": [5000],
+	// "portsAttributes": {
+	//     "5000": { "label": "API", "onAutoForward": "notify" }
+	// },
+
+	// [CUSTOMIZE] mounts — common patterns:
+	// "initializeCommand": "mkdir -p \"$HOME/.microsoft/usersecrets\"",
+	// "mounts": [
+	//     "source=x509stores,target=/home/vscode/.dotnet/corefx/cryptography/x509stores,type=volume",
+	//     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.microsoft/usersecrets,target=/home/vscode/.microsoft/usersecrets,type=bind,consistency=cached"
+	// ],
+
+	"postCreateCommand": "bash .devcontainer/post-create.sh",
+	"remoteUser": "vscode"
+}
